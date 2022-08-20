@@ -1,0 +1,22 @@
+# Build layer
+FROM node:lts-alpine AS build
+RUN mkdir -p /usr/know-it-all-src/
+WORKDIR /usr/know-it-all-src/
+COPY package.json /usr/know-it-all-src/
+RUN npm install
+COPY . /usr/know-it-all-src/
+RUN npm run build
+
+# Image layer
+FROM node:lts-alpine
+
+ENV TZ=Australia/Brisbane
+ENV NODE_ENV=production
+
+RUN mkdir -p /usr/know-it-all
+WORKDIR /usr/know-it-all
+COPY package.json /usr/know-it-all/
+RUN npm install --production
+COPY --from=build /usr/know-it-all-src/dist /usr/know-it-all
+
+CMD ["node", "index.js"]
