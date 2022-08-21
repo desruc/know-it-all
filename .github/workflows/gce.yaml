@@ -18,7 +18,6 @@ on:
   push:
     branches:
     - 'master'
-    - 'cloud-deploy' # TODO: take out once workflow is confirmed working
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
