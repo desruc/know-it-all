@@ -22,7 +22,7 @@ ENV NODE_ENV=production
 RUN mkdir -p /usr/know-it-all
 WORKDIR /usr/know-it-all
 COPY package.json /usr/know-it-all/
-RUN npm install --production
+RUN npm install --omit=dev
 COPY --from=build /usr/know-it-all-src/dist /usr/know-it-all
 
-CMD ["node", "index.js"]
+CMD ["npm", "run", "start:prod"]
