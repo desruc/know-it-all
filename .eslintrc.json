@@ -35,5 +35,15 @@
         "trailingComma": "none"
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      },
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
   }
 }

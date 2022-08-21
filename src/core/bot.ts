@@ -1,6 +1,6 @@
 import { Client, IntentsBitField } from "discord.js";
-import { DiscordEvent } from "../types";
-import { ready } from "../events/ready";
+import { ready } from "~/events/ready";
+import { DiscordEvent } from "~/types";
 
 const client = new Client({
   partials: [],

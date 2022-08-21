@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "outDir": "dist",
+    "baseUrl": "./src",
+    "paths": {
+        "~/*": ["./*"],
+    },
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
     /* Projects */

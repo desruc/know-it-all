@@ -1,7 +1,7 @@
 import type { Client } from "discord.js";
 import { ActivityType } from "discord.js";
-import { logger } from "../core/logger";
-import { DiscordEvent } from "../types";
+import { logger } from "~/core/logger";
+import { DiscordEvent } from "~/types";
 
 function setPresence(client: Client) {
   client.user?.setPresence({
