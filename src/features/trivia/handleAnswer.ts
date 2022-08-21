@@ -11,36 +11,52 @@ const triviaRoleName = "Trivia Kingpin";
 
 const getUserId = (interaction: ButtonInteraction) => interaction.user.id;
 
+const createTriviaRole = async (guild: Guild) => {
+  const role = await guild.roles.create({
+    name: triviaRoleName,
+    mentionable: false,
+    hoist: true,
+    position: 3,
+    color: Colors.LuminousVividPink
+  });
+
+  return role;
+};
+
 const grantWinnerRole = async (guild: Guild, interaction: ButtonInteraction) => {
   const allRoles = await guild.roles.fetch();
-  let existingRole = allRoles.find((r) => r.name === triviaRoleName);
+
+  const existingRole = allRoles.find((r) => r.name === triviaRoleName);
 
   if (!existingRole) {
     logger.info("The winning role does not exist on this guild. Creating it now.", {
       guild: guild.id
     });
-
-    existingRole = await guild.roles.create({
-      name: triviaRoleName,
-      mentionable: false,
-      hoist: true,
-      position: 3,
-      color: Colors.LuminousVividPink
-    });
   }
+
+  const role = existingRole ?? (await createTriviaRole(guild));
 
   // Remove role from previous winner
   const guildMembers = await guild.members.fetch();
 
   guildMembers.forEach((m) => {
-    m.roles.remove(existingRole!);
+    m.roles.remove(role);
   });
 
   const winningMember = guildMembers.find(
     (m) => m.user.id === interaction.member?.user.id
   );
 
-  winningMember?.roles.add(existingRole);
+  if (winningMember) {
+    logger.info("Granting role to winning member.", {
+      winningMember: winningMember.id,
+      role: role.name
+    });
+
+    winningMember.roles.add(role);
+  } else {
+    logger.info("Could not find winning member.", { guild: guild.id });
+  }
 };
 
 export const onCorrectAnswer = async (

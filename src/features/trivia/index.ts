@@ -11,28 +11,16 @@ import {
   getInitialComponentRow
 } from "./questionEmbed";
 
-// Docker container default timezone is UTC
-const triviaTimes = [
-  "1 7 * * *", // 5:00pm AEST
-  "30 7 * * *", // 5:30pm AEST
-  "1 8 * * *", // 6:00pm AEST
-  "30 8 * * *", // 6:30pm AEST
-  "1 9 * * *", // 7:00pm AEST
-  "30 9 * * *", // 7:30pm AEST
-  "1 10 * * *", // 8:00pm AEST
-  "30 10 * * *", // 8:30pm AEST
-  "1 11 * * *", // 9:00pm AEST
-  "30 11 * * *" // 9:30pm AEST
-];
-
-const getTriviaTime = () => {
-  const rand = randomNumber(0, triviaTimes.length - 1);
-  return triviaTimes[rand];
+// Get a random time between 5pm and 11PM AEST
+const getRandomTriviaTime = () => {
+  return `${randomNumber(0, 57)} ${randomNumber(7, 12)} * * *`;
 };
 
 export const rescheduleTrivia = (job: ScheduledJob) => {
-  const nextTime = getTriviaTime();
+  const nextTime = getRandomTriviaTime();
+
   job.reschedule(nextTime);
+
   logger.info("Trivia job has been rescheduled", {
     nextInvocation: job.nextInvocation()
   });

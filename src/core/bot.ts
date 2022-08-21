@@ -3,7 +3,6 @@ import { ready } from "~/events/ready";
 import { DiscordEvent } from "~/types";
 import { db } from "~/db";
 import { logger } from "~/core/logger";
-import { initializeScheduler } from "~/schedule";
 
 const client = new Client({
   partials: [],
@@ -35,6 +34,4 @@ export async function initializeBot() {
   initializeEvents();
 
   await client.login(process.env.DISCORD_TOKEN);
-
-  initializeScheduler(client);
 }
