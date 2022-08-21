@@ -6,12 +6,12 @@ import {
   Colors
 } from "discord.js";
 
-export const getInitialComponentRow = (answers: string[]): ActionRowBuilder => {
+export const getInitialComponentRow = (answers: string[]) => {
   const buttons = answers.map((a) =>
     new ButtonBuilder().setCustomId(a).setLabel(a).setStyle(ButtonStyle.Primary)
   );
 
-  return new ActionRowBuilder().addComponents(buttons);
+  return new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
 };
 
 export const createTriviaEmbed = (question: string): EmbedBuilder => {
@@ -31,5 +31,5 @@ export const getCompletedAnswerRow = (answers: string[], correctAnswer: string) 
       .setStyle(a === correctAnswer ? ButtonStyle.Success : ButtonStyle.Danger)
   );
 
-  return new ActionRowBuilder().addComponents(buttons);
+  return new ActionRowBuilder<ButtonBuilder>().addComponents(buttons);
 };

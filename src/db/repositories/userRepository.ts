@@ -3,23 +3,26 @@ import { User } from "~/db/entities/user";
 
 export const userRepository = db.getRepository(User);
 
-const getUser = async (userId: string) => {
-  const existingUser = await userRepository.findOneBy({ id: userId });
+const getUser = async (guildId: string, userId: string) => {
+  const existingUser = await userRepository.findOneBy({
+    id: userId,
+    guild: guildId
+  });
 
   if (existingUser) return existingUser;
 
-  const newUser = await userRepository.save({ id: userId });
+  const newUser = await userRepository.save({ id: userId, guild: guildId });
 
   return newUser;
 };
 
-export const hasUserAnswered = async (userId: string) => {
-  const user = await getUser(userId);
+export const hasUserAnswered = async (guildId: string, userId: string) => {
+  const user = await getUser(guildId, userId);
   return user.answered;
 };
 
-export const markHasAnswered = async (userId: string) => {
-  const user = await getUser(userId);
+export const markHasAnswered = async (guildId: string, userId: string) => {
+  const user = await getUser(guildId, userId);
 
   user.answered = true;
   user.currentStreak = 0;
@@ -37,8 +40,8 @@ export const resetStreaks = async (userId: string) => {
     .execute();
 };
 
-export const updateWinner = async (userId: string) => {
-  const user = await getUser(userId);
+export const updateWinner = async (guildId: string, userId: string) => {
+  const user = await getUser(guildId, userId);
 
   user.currentStreak += 1;
   user.highestStreak += 1;
@@ -47,4 +50,12 @@ export const updateWinner = async (userId: string) => {
   user.answered = true;
   const updated = await userRepository.save(user);
   return updated;
+};
+
+export const resetAnswered = async () => {
+  await userRepository
+    .createQueryBuilder()
+    .update()
+    .set({ answered: false })
+    .execute();
 };
