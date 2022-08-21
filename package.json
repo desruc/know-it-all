@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist && cd src && tsc",
     "start": "nodemon --config nodemon.json src/index.ts",
-    "start:prod": "node --require module-alias/register dist/index.js"
+    "start:prod": "node --require module-alias/register index.js"
   },
   "repository": {
     "type": "git",
@@ -50,6 +50,6 @@
     "zod": "^3.18.0"
   },
   "_moduleAliases": {
-    "~": "./dist"
+    "~": "./"
   }
 }
