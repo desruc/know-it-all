@@ -25,9 +25,12 @@ function initializeEvents() {
 }
 
 export async function initializeBot() {
-  db.initialize()
-    .then(() => logger.info("Successfully connected to database."))
-    .catch((error) => logger.error("Error connecting to database.", { error }));
+  try {
+    await db.initialize();
+    logger.info("Successfully connected to database.");
+  } catch (error) {
+    logger.error("Error connecting to database.", { error });
+  }
 
   initializeScheduler(client);
 

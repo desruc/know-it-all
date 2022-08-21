@@ -10,6 +10,12 @@ RUN npm run build
 # Image layer
 FROM node:lts-alpine
 
+ARG DISCORD_TOKEN
+ARG DB_URL
+
+ENV DISCORD_TOKEN=${DISCORD_TOKEN}
+ENV DB_URL=${DB_URL}
+
 ENV TZ=Australia/Brisbane
 ENV NODE_ENV=production
 
