@@ -16,7 +16,6 @@ ARG DB_URL
 ENV DISCORD_TOKEN=${DISCORD_TOKEN}
 ENV DB_URL=${DB_URL}
 
-ENV TZ=Australia/Brisbane
 ENV NODE_ENV=production
 
 RUN mkdir -p /usr/know-it-all
