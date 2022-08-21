@@ -67,7 +67,7 @@ jobs:
         gcloud compute instances add-metadata $GCE_INSTANCE \
           --zone "$GCE_INSTANCE_ZONE" \
           --metadata=startup-script="#! /bin/bash
-            docker image prune -af
+            docker image prune -af"
     - name: Deploy
       run: |-
         gcloud compute instances update-container "$GCE_INSTANCE" \
