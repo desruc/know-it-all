@@ -4,7 +4,7 @@ import { logger } from "~/core/logger";
 
 import { sendTriviaQuestion, rescheduleTrivia } from "~/features/trivia";
 
-const firstTriviaJobRule = "0 13 * * *"; // 2.00PM UTC (11PM AEST)
+const firstTriviaJobRule = "0 22 * * *"; // 10.00PM UTC (8AM AEST)
 
 export function initializeScheduler(client: Client) {
   logger.info("Initializing scheduler.");

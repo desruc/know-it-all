@@ -32,9 +32,9 @@ export async function initializeBot() {
     logger.error("Error connecting to database.", { error });
   }
 
-  initializeScheduler(client);
-
   initializeEvents();
 
   await client.login(process.env.DISCORD_TOKEN);
+
+  initializeScheduler(client);
 }
