@@ -11,17 +11,18 @@ import {
   getInitialComponentRow
 } from "./questionEmbed";
 
+// Docker container default timezone is UTC
 const triviaTimes = [
-  "1 17 * * *", // 5:00pm AEST
-  "30 17 * * *", // 5:30pm AEST
-  "1 18 * * *", // 6:00pm AEST
-  "30 18 * * *", // 6:30pm AEST
-  "1 19 * * *", // 7:00pm AEST
-  "30 19 * * *", // 7:30pm AEST
-  "1 20 * * *", // 8:00pm AEST
-  "30 20 * * *", // 8:30pm AEST
-  "1 21 * * *", // 9:00pm AEST
-  "30 21 * * *" // 9:30pm AEST
+  "1 7 * * *", // 5:00pm AEST
+  "30 7 * * *", // 5:30pm AEST
+  "1 8 * * *", // 6:00pm AEST
+  "30 8 * * *", // 6:30pm AEST
+  "1 9 * * *", // 7:00pm AEST
+  "30 9 * * *", // 7:30pm AEST
+  "1 10 * * *", // 8:00pm AEST
+  "30 10 * * *", // 8:30pm AEST
+  "1 11 * * *", // 9:00pm AEST
+  "30 11 * * *" // 9:30pm AEST
 ];
 
 const getTriviaTime = () => {
@@ -32,7 +33,9 @@ const getTriviaTime = () => {
 export const rescheduleTrivia = (job: ScheduledJob) => {
   const nextTime = getTriviaTime();
   job.reschedule(nextTime);
-  logger.info(`The next trivia question will be sent on ${job.nextInvocation()}`);
+  logger.info("Trivia job has been rescheduled", {
+    nextInvocation: job.nextInvocation()
+  });
 
   // Allow all users to answer the next question
   resetAnswered();
