@@ -1,6 +1,8 @@
 import { Client, IntentsBitField } from "discord.js";
 import { ready } from "~/events/ready";
 import { DiscordEvent } from "~/types";
+import { db } from "~/db";
+import { logger } from "~/core/logger";
 
 const client = new Client({
   partials: [],
@@ -22,6 +24,10 @@ function initializeEvents() {
 }
 
 export async function initializeBot() {
+  db.initialize()
+    .then(() => logger.info("Successfully connected to database."))
+    .catch((error) => logger.error("Error connecting to database.", { error }));
+
   initializeEvents();
 
   await client.login(process.env.DISCORD_TOKEN);

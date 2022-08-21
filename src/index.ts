@@ -1,7 +1,4 @@
-import "module-alias/register";
-import dotenv from "dotenv";
+import "dotenv/config";
 import { initializeBot } from "~/core/bot";
-
-dotenv.config();
 
 initializeBot();
