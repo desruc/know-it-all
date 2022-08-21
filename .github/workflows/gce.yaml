@@ -18,7 +18,6 @@ on:
   push:
     branches:
     - 'master'
-    - 'docker-secrets'
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
