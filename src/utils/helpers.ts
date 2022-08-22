@@ -1,5 +1,4 @@
 import type { TextChannel, Guild, Collection } from "discord.js";
-import { logger } from "~/core/logger";
 
 export const randomNumber = (min: number, max: number): number => {
   const strictMin: number = Math.ceil(Number(min));
@@ -15,8 +14,6 @@ export const getTextChannel = async (
   const textChannels = allChannels.filter(
     (c) => c.isTextBased() && !c.isThread() && c.type === 0
   ) as Collection<string, TextChannel>;
-
-  logger.info("text channels", { textChannels });
 
   // There HAS to be one text-channel in a server
   const baseChannel = textChannels.first()!;

@@ -12,7 +12,7 @@ import {
 } from "./questionEmbed";
 
 // Get a random time between 5pm and 11PM AEST
-const getRandomTriviaTime = () => {
+export const getRandomTriviaTime = () => {
   return `${randomNumber(0, 57)} ${randomNumber(7, 12)} * * *`;
 };
 

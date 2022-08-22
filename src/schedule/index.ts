@@ -1,19 +1,18 @@
 import type { Client } from "discord.js";
 import schedule from "node-schedule";
 import { logger } from "~/core/logger";
-
-import { sendTriviaQuestion, rescheduleTrivia } from "~/features/trivia";
-
-const firstTriviaJobRule = "0 11 * * *"; // 11AM UTC (9PM AEST)
+import {
+  sendTriviaQuestion,
+  rescheduleTrivia,
+  getRandomTriviaTime
+} from "~/features/trivia";
 
 export function initializeScheduler(client: Client) {
   logger.info("Initializing scheduler.", {
     guildIds: client.guilds.cache.map((g) => g.id)
   });
 
-  const triviaJob = schedule.scheduleJob(firstTriviaJobRule, () => {
-    logger.info("Sending trivia question.", { firstTriviaJobRule });
-
+  const triviaJob = schedule.scheduleJob(getRandomTriviaTime(), () => {
     client.guilds.cache.forEach((guild) => {
       logger.info("Sending question to guild.", { guild: guild.id });
 

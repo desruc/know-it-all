@@ -39,15 +39,17 @@ const grantWinnerRole = async (guild: Guild, interaction: ButtonInteraction) => 
   // Remove role from previous winner
   const guildMembers = await guild.members.fetch();
 
-  guildMembers.forEach((m) => {
-    m.roles.remove(role);
-  });
-
   const winningMember = guildMembers.find(
     (m) => m.user.id === interaction.member?.user.id
   );
 
   if (winningMember) {
+    guildMembers.forEach((m) => {
+      if (m.id !== winningMember.id) {
+        m.roles.remove(role);
+      }
+    });
+
     logger.info("Granting role to winning member.", {
       winningMember: winningMember.id,
       role: role.name
