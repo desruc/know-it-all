@@ -16,12 +16,12 @@ export function initializeScheduler(client: Client) {
     client.guilds.cache.forEach((guild) => {
       logger.info("Sending question to guild.", { guild: guild.id });
 
-      sendTriviaQuestion(guild).catch((error) =>
+      sendTriviaQuestion(guild).catch((error) => {
         logger.error("There was an error sending the trivia question.", {
           error,
           guild: guild.id
-        })
-      );
+        });
+      });
     });
   });
 
@@ -29,7 +29,13 @@ export function initializeScheduler(client: Client) {
     nextInvocation: triviaJob.nextInvocation()
   });
 
-  schedule.scheduleJob("59 23 * * *", () => {
+  const reschedulingJob = schedule.scheduleJob("59 23 * * *", (date) => {
+    logger.info("Rescheduling trivia job.", { date });
+
     rescheduleTrivia(triviaJob);
+  });
+
+  logger.info("Trivia rescheduling job configured.", {
+    nextInvocation: reschedulingJob.nextInvocation()
   });
 }

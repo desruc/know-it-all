@@ -62,8 +62,12 @@ export async function sendTriviaQuestion(guild: Guild) {
 
   collector.on("end", (_, reason) => {
     if (reason !== winnerStopReason) {
+      logger.info("The correct answer was not submitted in time.", {
+        guild: guild.id
+      });
+
       message.edit({
-        content: "**Times up!** It seems no one knew the answer.",
+        content: "**Times up!** No one answered correctly.",
         components: [getCompletedAnswerRow(allAnswers, answer)]
       });
     }
