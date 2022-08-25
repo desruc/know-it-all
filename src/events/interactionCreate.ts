@@ -1,11 +1,12 @@
 import type { Client, Interaction } from "discord.js";
+import { leaderboardCommand } from "~/commands/leaderboard/leaderboard";
 import { meCommand } from "~/commands/me";
 import { logger } from "~/core/logger";
 import type { DiscordEvent } from "~/types";
 
-const slashCommands = [meCommand];
+const slashCommands = [meCommand, leaderboardCommand];
 
-async function exec(_: Client, interaction: Interaction) {
+async function exec(client: Client, interaction: Interaction) {
   if (!interaction.isCommand()) return;
 
   const command = slashCommands.find(
@@ -15,7 +16,7 @@ async function exec(_: Client, interaction: Interaction) {
   if (!command) return;
 
   try {
-    await command.execute(interaction);
+    await command.execute(client, interaction);
   } catch (error) {
     logger.error("There was an error executing the command", { error });
 

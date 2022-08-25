@@ -59,3 +59,24 @@ export const resetAnswered = async () => {
     .set({ answered: false })
     .execute();
 };
+
+export const topFiveStreaks = async (guildId: string) =>
+  userRepository.find({
+    where: { guild: guildId },
+    order: { highestStreak: "DESC" },
+    take: 5
+  });
+
+export const topFiveCorrectAnswers = async (guildId: string) =>
+  userRepository.find({
+    where: { guild: guildId },
+    order: { totalCorrectAnswers: "DESC" },
+    take: 5
+  });
+
+export const topFiveTotalAnswered = async (guildId: string) =>
+  userRepository.find({
+    where: { guild: guildId },
+    order: { totalAnswers: "DESC" },
+    take: 5
+  });

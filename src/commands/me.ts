@@ -1,9 +1,9 @@
 import { SlashCommandBuilder, EmbedBuilder, Colors } from "discord.js";
-import type { CommandInteraction } from "discord.js";
+import type { CommandInteraction, Client } from "discord.js";
 import { getUser } from "~/db/repositories/userRepository";
 
 const commandName = "me";
-const commandDescription = "See your trivia stats for this server.";
+const commandDescription = "See your trivia stats for this server";
 
 const command = new SlashCommandBuilder()
   .setName(commandName)
@@ -48,7 +48,7 @@ const getEmbed = async (interaction: CommandInteraction) => {
   return embed;
 };
 
-const executeSlashCommand = async (interaction: CommandInteraction) => {
+const executeSlashCommand = async (_: Client, interaction: CommandInteraction) => {
   await interaction.deferReply();
 
   const embed = await getEmbed(interaction);

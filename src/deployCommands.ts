@@ -3,6 +3,7 @@ import { REST } from "@discordjs/rest";
 import { Routes } from "discord.js";
 
 import { meCommand } from "~/commands/me";
+import { leaderboardCommand } from "./commands/leaderboard/leaderboard";
 
 const { CLIENT_ID, DISCORD_TOKEN, GUILD_ID } = process.env;
 
@@ -10,7 +11,10 @@ if (!DISCORD_TOKEN) throw Error("DISCORD_TOKEN must be supplied");
 if (!CLIENT_ID) throw Error("CLIENT_ID must be supplied");
 if (!GUILD_ID) throw Error("GUILD_ID must be supplied");
 
-const commands = [meCommand.definition.toJSON()];
+const commands = [
+  meCommand.definition.toJSON(),
+  leaderboardCommand.definition.toJSON()
+];
 
 const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
 
