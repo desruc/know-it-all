@@ -3,7 +3,7 @@ import { User } from "~/db/entities/user";
 
 export const userRepository = db.getRepository(User);
 
-const getUser = async (guildId: string, userId: string) => {
+export const getUser = async (guildId: string, userId: string) => {
   const existingUser = await userRepository.findOneBy({
     id: userId,
     guild: guildId

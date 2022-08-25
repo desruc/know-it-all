@@ -6,7 +6,9 @@
   "scripts": {
     "build": "rimraf dist && cd src && tsc",
     "start": "nodemon --config nodemon.json src/index.ts",
-    "start:prod": "node --require module-alias/register index.js"
+    "start:prod": "node --require module-alias/register index.js",
+    "deploy-commands:dev": "ts-node --require tsconfig-paths/register src/deployCommands.ts",
+    "deploy-commands:prod": "node --require module-alias/register ./deployCommands.js"
   },
   "repository": {
     "type": "git",
