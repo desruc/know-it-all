@@ -26,7 +26,7 @@ const statChoices = [
   { name: "streak", value: "streak" },
   { name: "correct answers", value: "correctAnswers" },
   { name: "total answers", value: "totalAnswers" }
-];
+] as const;
 
 type Stat = typeof statChoices[number]["value"];
 
@@ -43,7 +43,7 @@ const command = new SlashCommandBuilder()
 
 const fetchUsersFromDatabase = async (guildId: string, stat: Stat) => {
   switch (stat) {
-    case "streaks":
+    case "streak":
       return topFiveStreaks(guildId);
     case "correctAnswers":
       return topFiveCorrectAnswers(guildId);
@@ -103,6 +103,38 @@ const addTopSteaksToEmbed = async (users: MappedUser[], embed: EmbedBuilder) => 
   embed.setDescription(description);
 };
 
+const addTopCorrectAnswers = async (users: MappedUser[], embed: EmbedBuilder) => {
+  let description = "";
+
+  users.forEach((u, idx) => {
+    description += `${idx + 1}. ${u.discordUser.username} - **${
+      u.totalCorrectAnswers
+    }**\n`;
+  });
+
+  embed.setDescription(description);
+};
+
+const addTopTotalAnswers = async (users: MappedUser[], embed: EmbedBuilder) => {
+  let description = "";
+
+  users.forEach((u, idx) => {
+    description += `${idx + 1}. ${u.discordUser.username} - **${u.totalAnswers}**\n`;
+  });
+
+  embed.setDescription(description);
+};
+
+const addDataToEmbed = async (
+  users: MappedUser[],
+  embed: EmbedBuilder,
+  stat: Stat
+) => {
+  if (stat === "streak") addTopSteaksToEmbed(users, embed);
+  if (stat === "correctAnswers") addTopCorrectAnswers(users, embed);
+  if (stat === "totalAnswers") addTopTotalAnswers(users, embed);
+};
+
 const executeSlashCommand = async (client: Client, interaction: Interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
@@ -110,17 +142,19 @@ const executeSlashCommand = async (client: Client, interaction: Interaction) => 
 
   await interaction.deferReply();
 
-  const stat = interaction.options.getString("stat");
+  const rawStat = interaction.options.getString("stat");
 
-  if (!stat || !statChoices.some((s) => s.value === stat))
+  if (!rawStat || !statChoices.some((s) => s.value === rawStat))
     throw Error("Invalid stat supplied");
+
+  const stat = rawStat as Stat;
 
   try {
     const users = await getMappedUsers(client, interaction.guildId, stat);
 
     const embed = createEmbed(interaction, stat);
 
-    if (stat === "streak") addTopSteaksToEmbed(users, embed);
+    addDataToEmbed(users, embed, stat);
 
     if (embed) {
       interaction.editReply({ embeds: [embed] });
