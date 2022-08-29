@@ -31,6 +31,7 @@ export const deployCommands = async (guild: Guild) => {
     });
   } catch (error) {
     logger.error("Error refreshing application (/) commands for guild.", {
+      error,
       guild: guild.id
     });
   }
