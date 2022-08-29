@@ -43,11 +43,17 @@ export const resetStreaks = async (userId: string) => {
 export const updateWinner = async (guildId: string, userId: string) => {
   const user = await getUser(guildId, userId);
 
-  user.currentStreak += 1;
-  user.highestStreak += 1;
+  const newStreak = user.currentStreak + 1;
+
+  user.currentStreak = newStreak;
   user.totalCorrectAnswers += 1;
   user.totalAnswers += 1;
   user.answered = true;
+
+  if (newStreak > user.highestStreak) {
+    user.highestStreak = newStreak;
+  }
+
   const updated = await userRepository.save(user);
   return updated;
 };

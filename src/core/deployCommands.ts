@@ -15,8 +15,8 @@ const commands = [
 
 export const deployCommands = async (guild: Guild) => {
   try {
-    if (!DISCORD_TOKEN) throw Error("DISCORD_TOKEN must be supplied");
-    if (!CLIENT_ID) throw Error("CLIENT_ID must be supplied");
+    if (!DISCORD_TOKEN) throw new Error("DISCORD_TOKEN must be supplied");
+    if (!CLIENT_ID) throw new Error("CLIENT_ID must be supplied");
 
     const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
 
