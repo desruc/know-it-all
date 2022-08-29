@@ -18,7 +18,6 @@ on:
   push:
     branches:
     - 'master'
-    - 'slash-commands'
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
