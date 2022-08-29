@@ -1,5 +1,6 @@
 import type { Client } from "discord.js";
 import { ActivityType } from "discord.js";
+import { deployCommands } from "~/core/deployCommands";
 import { logger } from "~/core/logger";
 import { initializeScheduler } from "~/schedule";
 import { DiscordEvent } from "~/types";
@@ -16,6 +17,10 @@ async function exec(client: Client) {
   setPresence(client);
 
   initializeScheduler(client);
+
+  client.guilds.cache.forEach((guild) => {
+    deployCommands(guild);
+  });
 }
 
 export const ready: DiscordEvent = {
