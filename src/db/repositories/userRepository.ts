@@ -3,7 +3,7 @@ import { User } from "~/db/entities/user";
 
 export const userRepository = db.getRepository(User);
 
-const getUser = async (guildId: string, userId: string) => {
+export const getUser = async (guildId: string, userId: string) => {
   const existingUser = await userRepository.findOneBy({
     id: userId,
     guild: guildId
@@ -43,11 +43,17 @@ export const resetStreaks = async (userId: string) => {
 export const updateWinner = async (guildId: string, userId: string) => {
   const user = await getUser(guildId, userId);
 
-  user.currentStreak += 1;
-  user.highestStreak += 1;
+  const newStreak = user.currentStreak + 1;
+
+  user.currentStreak = newStreak;
   user.totalCorrectAnswers += 1;
   user.totalAnswers += 1;
   user.answered = true;
+
+  if (newStreak > user.highestStreak) {
+    user.highestStreak = newStreak;
+  }
+
   const updated = await userRepository.save(user);
   return updated;
 };
@@ -59,3 +65,24 @@ export const resetAnswered = async () => {
     .set({ answered: false })
     .execute();
 };
+
+export const topFiveStreaks = async (guildId: string) =>
+  userRepository.find({
+    where: { guild: guildId },
+    order: { highestStreak: "DESC" },
+    take: 5
+  });
+
+export const topFiveCorrectAnswers = async (guildId: string) =>
+  userRepository.find({
+    where: { guild: guildId },
+    order: { totalCorrectAnswers: "DESC" },
+    take: 5
+  });
+
+export const topFiveTotalAnswered = async (guildId: string) =>
+  userRepository.find({
+    where: { guild: guildId },
+    order: { totalAnswers: "DESC" },
+    take: 5
+  });

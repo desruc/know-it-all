@@ -1,8 +1,9 @@
 import { Client, IntentsBitField } from "discord.js";
 import { ready } from "~/events/ready";
-import { DiscordEvent } from "~/types";
+import type { DiscordEvent } from "~/types";
 import { db } from "~/db";
 import { logger } from "~/core/logger";
+import { interactionCreate } from "~/events/interactionCreate";
 
 const client = new Client({
   partials: [],
@@ -13,12 +14,12 @@ const client = new Client({
   ]
 });
 
-const events: DiscordEvent[] = [ready];
+const events: DiscordEvent[] = [ready, interactionCreate];
 
 function initializeEvents() {
   events.forEach((e) => {
     client.on(e.name, async (...args) => {
-      e.exec(client, ...args);
+      await e.exec(client, ...args);
     });
   });
 }
