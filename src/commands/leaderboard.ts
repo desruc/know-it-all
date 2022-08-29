@@ -89,40 +89,40 @@ const createEmbed = (interaction: CommandInteraction, stat: Stat) => {
   return embed;
 };
 
-const addTopSteaksToEmbed = async (users: MappedUser[], embed: EmbedBuilder) => {
-  let description = "";
+const FALLBACK_DESCRIPTION = "No one has answered a question!";
 
-  users.forEach((u, idx) => {
-    description += `${idx + 1}. ${u.discordUser.username} - **${u.highestStreak}**${
-      u.currentStreak === u.highestStreak && u.highestStreak !== 0
+const getTopStreaksDescription = (users: MappedUser[]) => {
+  const description = users.reduce((acc, curr, idx) => {
+    return `${acc}${idx + 1}. ${curr.discordUser.username} - **${
+      curr.highestStreak
+    }**${
+      curr.currentStreak === curr.highestStreak && curr.highestStreak !== 0
         ? " (current)"
         : ""
     }\n`;
-  });
+  }, "");
 
-  embed.setDescription(description);
+  return description.length ? description : FALLBACK_DESCRIPTION;
 };
 
-const addTopCorrectAnswers = async (users: MappedUser[], embed: EmbedBuilder) => {
-  let description = "";
-
-  users.forEach((u, idx) => {
-    description += `${idx + 1}. ${u.discordUser.username} - **${
-      u.totalCorrectAnswers
+const getCorrectAnswersDescription = (users: MappedUser[]) => {
+  const description = users.reduce((acc, curr, idx) => {
+    return `${acc}${idx + 1}. ${curr.discordUser.username} - **${
+      curr.totalCorrectAnswers
     }**\n`;
-  });
+  }, "");
 
-  embed.setDescription(description);
+  return description.length ? description : FALLBACK_DESCRIPTION;
 };
 
-const addTopTotalAnswers = async (users: MappedUser[], embed: EmbedBuilder) => {
-  let description = "";
+const getTotalAnswersDescription = (users: MappedUser[]) => {
+  const description = users.reduce((acc, curr, idx) => {
+    return `${acc}${idx + 1}. ${curr.discordUser.username} - **${
+      curr.totalAnswers
+    }**\n`;
+  }, "");
 
-  users.forEach((u, idx) => {
-    description += `${idx + 1}. ${u.discordUser.username} - **${u.totalAnswers}**\n`;
-  });
-
-  embed.setDescription(description);
+  return description.length ? description : FALLBACK_DESCRIPTION;
 };
 
 const addDataToEmbed = async (
@@ -130,9 +130,13 @@ const addDataToEmbed = async (
   embed: EmbedBuilder,
   stat: Stat
 ) => {
-  if (stat === "streak") addTopSteaksToEmbed(users, embed);
-  if (stat === "correctAnswers") addTopCorrectAnswers(users, embed);
-  if (stat === "totalAnswers") addTopTotalAnswers(users, embed);
+  if (stat === "streak") embed.setDescription(getTopStreaksDescription(users));
+
+  if (stat === "correctAnswers")
+    embed.setDescription(getCorrectAnswersDescription(users));
+
+  if (stat === "totalAnswers")
+    embed.setDescription(getTotalAnswersDescription(users));
 };
 
 const executeSlashCommand = async (client: Client, interaction: Interaction) => {

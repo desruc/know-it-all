@@ -3,7 +3,7 @@ import { Routes } from "discord.js";
 import type { Guild } from "discord.js";
 
 import { meCommand } from "~/commands/me";
-import { leaderboardCommand } from "~/commands/leaderboard/leaderboard";
+import { leaderboardCommand } from "~/commands/leaderboard";
 import { logger } from "~/core/logger";
 
 const { CLIENT_ID, DISCORD_TOKEN } = process.env;

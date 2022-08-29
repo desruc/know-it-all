@@ -1,5 +1,5 @@
 import type { Client, Interaction } from "discord.js";
-import { leaderboardCommand } from "~/commands/leaderboard/leaderboard";
+import { leaderboardCommand } from "~/commands/leaderboard";
 import { meCommand } from "~/commands/me";
 import { logger } from "~/core/logger";
 import type { DiscordEvent } from "~/types";
