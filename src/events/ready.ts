@@ -2,6 +2,7 @@ import type { ActivitiesOptions, Client } from "discord.js";
 import { ActivityType } from "discord.js";
 import { deployCommands } from "~/core/deployCommands";
 import { logger } from "~/core/logger";
+import { resetAnswered } from "~/db/repositories/userRepository";
 import { initializeScheduler } from "~/schedule";
 import { DiscordEvent } from "~/types";
 import { randomNumber } from "~/utils/helpers";
@@ -27,6 +28,8 @@ async function exec(client: Client) {
   setPresence(client);
 
   initializeScheduler(client);
+
+  resetAnswered();
 
   client.guilds.cache.forEach((guild) => {
     deployCommands(guild);
