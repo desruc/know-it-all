@@ -11,9 +11,9 @@ import {
   getInitialComponentRow
 } from "./questionEmbed";
 
-// Get a random time between 5pm and 11PM AEST
+// Get a random time between 8am and 11PM AEST
 export const getRandomTriviaTime = () => {
-  return `${randomNumber(0, 57)} ${randomNumber(7, 12)} * * *`;
+  return `${randomNumber(0, 57)} ${randomNumber(12, 22)} * * *`;
 };
 
 export const rescheduleTrivia = (job: ScheduledJob) => {

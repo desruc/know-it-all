@@ -7,7 +7,7 @@
 </h3>
 
 ## What it does
-Once per day, the bot sends a random question from <a href="https://opentdb.com/">Open Trivia Database</a> to the first text channel in the server, at a random time between 5PM and 11PM AEST.
+Once per day, the bot sends a random question from <a href="https://opentdb.com/">Open Trivia Database</a> to the first text channel in the server, at a random time between 8AM and 11PM AEST.
 
 Users get one attempt at answering the question; if they answer correctly, a point is added to their streak and they are granted the `Trivia Kingpin` role. If they answer incorrectly, their streak is reset and the role is removed (if they previously held the title).
 
