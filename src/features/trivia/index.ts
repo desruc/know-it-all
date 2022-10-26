@@ -30,46 +30,57 @@ export const rescheduleTrivia = (job: ScheduledJob) => {
 };
 
 export async function sendTriviaQuestion(guild: Guild) {
-  const channel = await getTextChannel(guild);
+  try {
+    const channel = await getTextChannel(guild);
 
-  const { question, answer, allAnswers } = await getQuestionData();
-
-  const message = await channel.send({
-    embeds: [createTriviaEmbed(question)],
-    components: [getInitialComponentRow(allAnswers)]
-  });
-
-  const collector = message.createMessageComponentCollector({
-    componentType: ComponentType.Button,
-    time: 1800000
-  });
-
-  const winnerStopReason = "winner";
-
-  collector.on("collect", async (interaction) => {
-    const hasAnswered = await hasUserAnswered(guild.id, interaction.user.id);
-
-    if (hasAnswered) {
-      onAlreadyAnswered(interaction);
-    } else if (interaction.customId === answer) {
-      collector.stop(winnerStopReason);
-      message.edit({ components: [getCompletedAnswerRow(allAnswers, answer)] });
-      await onCorrectAnswer(guild, interaction);
-    } else {
-      await onWrongAnswer(guild.id, interaction);
+    if (!channel) {
+      throw new Error("Could not find a suitable text channel");
     }
-  });
 
-  collector.on("end", (_, reason) => {
-    if (reason !== winnerStopReason) {
-      logger.info("The correct answer was not submitted in time.", {
-        guild: guild.id
-      });
+    const { question, answer, allAnswers } = await getQuestionData();
 
-      message.edit({
-        content: "**Times up!** No one answered correctly.",
-        components: [getCompletedAnswerRow(allAnswers, answer)]
-      });
-    }
-  });
+    const message = await channel.send({
+      embeds: [createTriviaEmbed(question)],
+      components: [getInitialComponentRow(allAnswers)]
+    });
+
+    const collector = message.createMessageComponentCollector({
+      componentType: ComponentType.Button,
+      time: 1800000
+    });
+
+    const winnerStopReason = "winner";
+
+    collector.on("collect", async (interaction) => {
+      const hasAnswered = await hasUserAnswered(guild.id, interaction.user.id);
+
+      if (hasAnswered) {
+        onAlreadyAnswered(interaction);
+      } else if (interaction.customId === answer) {
+        collector.stop(winnerStopReason);
+        message.edit({ components: [getCompletedAnswerRow(allAnswers, answer)] });
+        await onCorrectAnswer(guild, interaction);
+      } else {
+        await onWrongAnswer(guild.id, interaction);
+      }
+    });
+
+    collector.on("end", (_, reason) => {
+      if (reason !== winnerStopReason) {
+        logger.info("The correct answer was not submitted in time.", {
+          guild: guild.id
+        });
+
+        message.edit({
+          content: "**Times up!** No one answered correctly.",
+          components: [getCompletedAnswerRow(allAnswers, answer)]
+        });
+      }
+    });
+  } catch (error) {
+    logger.error("There was an error sending trivia question", {
+      error,
+      guild: guild.id
+    });
+  }
 }

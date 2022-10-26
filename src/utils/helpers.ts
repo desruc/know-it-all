@@ -9,21 +9,23 @@ export const randomNumber = (min: number, max: number): number => {
 export const getTextChannel = async (
   guild: Guild,
   channelName = ""
-): Promise<TextChannel> => {
+): Promise<TextChannel | void> => {
   const allChannels = await guild.channels.fetch();
   const textChannels = allChannels.filter(
-    (c) => c.isTextBased() && !c.isThread() && c.type === 0
+    (c) => c?.isTextBased() && !c?.isThread() && c?.type === 0
   ) as Collection<string, TextChannel>;
 
   // There HAS to be one text-channel in a server
-  const baseChannel = textChannels.first()!;
+  const baseChannel = textChannels.first();
 
-  if (channelName.trim().length === 0) return baseChannel;
+  if (channelName.trim().length === 0 && baseChannel !== undefined)
+    return baseChannel;
 
   const channel = textChannels.find((c) => c.name === channelName);
 
   if (channel) return channel;
-  return baseChannel;
+
+  if (baseChannel) return baseChannel;
 };
 
 export const shuffleArray = <T>(array: T[]) => {
