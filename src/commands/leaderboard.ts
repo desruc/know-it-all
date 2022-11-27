@@ -9,6 +9,7 @@ import type {
 import { logger } from "~/core/logger";
 import {
   topFiveCorrectAnswers,
+  topFiveHighestPoints,
   topFiveStreaks,
   topFiveTotalAnswered
 } from "~/db/repositories/userRepository";
@@ -25,7 +26,8 @@ const commandDescription = "see the leaderboard for the chosen statistic";
 const statChoices = [
   { name: "streak", value: "streak" },
   { name: "correct answers", value: "correctAnswers" },
-  { name: "total answers", value: "totalAnswers" }
+  { name: "total answers", value: "totalAnswers" },
+  { name: "highest points", value: "highestPoints" }
 ] as const;
 
 type Stat = typeof statChoices[number]["value"];
@@ -49,6 +51,8 @@ const fetchUsersFromDatabase = async (guildId: string, stat: Stat) => {
       return topFiveCorrectAnswers(guildId);
     case "totalAnswers":
       return topFiveTotalAnswered(guildId);
+    case "highestPoints":
+      return topFiveHighestPoints(guildId);
     default:
       return topFiveStreaks(guildId);
   }
@@ -70,7 +74,8 @@ const getMappedUsers = async (client: Client, guildId: string, stat: Stat) => {
 const titleLookup: Record<Stat, string> = {
   streak: "Users with the highest streaks",
   correctAnswers: "Users with the most correct answers",
-  totalAnswers: "Users who have attempted the most questions"
+  totalAnswers: "Users who have attempted the most questions",
+  highestPoints: "Users with the highest amount of points"
 };
 
 const createEmbed = (interaction: CommandInteraction, stat: Stat) => {
@@ -125,6 +130,20 @@ const getTotalAnswersDescription = (users: MappedUser[]) => {
   return description.length ? description : FALLBACK_DESCRIPTION;
 };
 
+const getHighestPointsDescription = (users: MappedUser[]) => {
+  const description = users.reduce((acc, curr, idx) => {
+    return `${acc}${idx + 1}. ${curr.discordUser.username} - **${
+      curr.highestPoints
+    }**${
+      curr.currentPoints === curr.highestPoints && curr.highestPoints !== 0
+        ? " (current)"
+        : ""
+    }\n`;
+  }, "");
+
+  return description.length ? description : FALLBACK_DESCRIPTION;
+};
+
 const addDataToEmbed = async (
   users: MappedUser[],
   embed: EmbedBuilder,
@@ -137,6 +156,9 @@ const addDataToEmbed = async (
 
   if (stat === "totalAnswers")
     embed.setDescription(getTotalAnswersDescription(users));
+
+  if (stat === "highestPoints")
+    embed.setDescription(getHighestPointsDescription(users));
 };
 
 const executeSlashCommand = async (client: Client, interaction: Interaction) => {

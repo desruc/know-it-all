@@ -15,6 +15,12 @@ export class User {
   highestStreak: number;
 
   @Column({ default: 0 })
+  currentPoints: number;
+
+  @Column({ default: 0 })
+  highestPoints: number;
+
+  @Column({ default: 0 })
   totalCorrectAnswers: number;
 
   @Column({ default: 0 })

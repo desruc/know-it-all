@@ -28,6 +28,14 @@ const getEmbed = async (interaction: CommandInteraction) => {
         value: userRecord.highestStreak.toString()
       },
       {
+        name: "Current points",
+        value: userRecord.currentPoints.toString()
+      },
+      {
+        name: "Highest points",
+        value: userRecord.highestPoints.toString()
+      },
+      {
         name: "Total correct answers",
         value: userRecord.totalCorrectAnswers.toString()
       },
