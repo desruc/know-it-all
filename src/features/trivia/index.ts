@@ -11,6 +11,13 @@ import {
   getInitialComponentRow
 } from "./questionEmbed";
 
+let pointsToGive = 3;
+
+const resetPointsToGive = () => {
+  logger.info("Resetting daily points");
+  pointsToGive = 3;
+};
+
 // Get a random time between 10am and 11PM AEST
 export const getRandomTriviaTime = () => {
   return `${randomNumber(0, 57)} ${randomNumber(0, 12)} * * *`;
@@ -57,9 +64,26 @@ export async function sendTriviaQuestion(guild: Guild) {
       if (hasAnswered) {
         onAlreadyAnswered(interaction);
       } else if (interaction.customId === answer) {
-        collector.stop(winnerStopReason);
-        message.edit({ components: [getCompletedAnswerRow(allAnswers, answer)] });
-        await onCorrectAnswer(guild, interaction);
+        // If two people have already got the correct answer, let the last person through then close the question
+        if (pointsToGive === 1) {
+          collector.stop(winnerStopReason);
+
+          message.edit({ components: [getCompletedAnswerRow(allAnswers, answer)] });
+
+          await onCorrectAnswer(guild, interaction, pointsToGive);
+
+          resetPointsToGive();
+        } else {
+          await onCorrectAnswer(guild, interaction, pointsToGive);
+
+          // First place gets 3 points, 2nd place 2 points and 3rd place 1 point
+          pointsToGive -= 1;
+
+          logger.info(
+            "Question answered correctly. Deducting one point for the day",
+            { nextPersonGets: pointsToGive }
+          );
+        }
       } else {
         await onWrongAnswer(guild.id, interaction);
       }
@@ -67,6 +91,8 @@ export async function sendTriviaQuestion(guild: Guild) {
 
     collector.on("end", (_, reason) => {
       if (reason !== winnerStopReason) {
+        resetPointsToGive();
+
         logger.info("The correct answer was not submitted in time.", {
           guild: guild.id
         });
