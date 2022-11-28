@@ -92,7 +92,7 @@ export async function sendTriviaQuestion(guild: Guild) {
 
     collector.on("end", (_, reason) => {
       if (reason !== winnerStopReason) {
-        resetPointsToGive();
+        
         //Somebody has answered correctly, but not all winners selected in time
         if (pointsToGive !== allowablePoints) {
 
@@ -114,6 +114,8 @@ export async function sendTriviaQuestion(guild: Guild) {
             components: [getCompletedAnswerRow(allAnswers, answer)]
           });
         }
+        
+        resetPointsToGive();
       }
     });
   } catch (error) {
