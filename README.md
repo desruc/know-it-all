@@ -1,5 +1,5 @@
 <h1 align="center">
-    🤖 Know It All 🤖
+   🏰 Knowledge Knight 🏰
 </h1>
 
 <h3 align="center">
