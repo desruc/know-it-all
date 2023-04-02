@@ -92,10 +92,8 @@ export async function sendTriviaQuestion(guild: Guild) {
 
     collector.on("end", (_, reason) => {
       if (reason !== winnerStopReason) {
-        
-        //Somebody has answered correctly, but not all winners selected in time
+        // Somebody has answered correctly, but not all winners selected in time
         if (pointsToGive !== allowablePoints) {
-
           logger.info("Some answers submitted correctly, but not exhausted", {
             guild: guild.id
           });
@@ -104,7 +102,8 @@ export async function sendTriviaQuestion(guild: Guild) {
             content: "**Times up!** Congratulations to the winners!",
             components: [getCompletedAnswerRow(allAnswers, answer)]
           });
-        } else { //Nobody answered correctly
+        } else {
+          // Nobody answered correctly
           logger.info("The correct answer was not submitted in time.", {
             guild: guild.id
           });
@@ -114,7 +113,7 @@ export async function sendTriviaQuestion(guild: Guild) {
             components: [getCompletedAnswerRow(allAnswers, answer)]
           });
         }
-        
+
         resetPointsToGive();
       }
     });

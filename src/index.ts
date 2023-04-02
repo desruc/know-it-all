@@ -9,8 +9,11 @@ process.on("unhandledRejection", (error) => {
 });
 
 process.on("uncaughtException", (error) => {
-  logger.error("UNCAUGHT_EXCEPTION: ", { error });
   logger.warn("NODE_WARN: ", {
     stack: "Uncaught Exception detected. Restarting..."
+  });
+  logger.error("UNCAUGHT_EXCEPTION: ", {
+    message: error.message,
+    stack: error.stack
   });
 });
