@@ -1,10 +1,10 @@
 # Build layer
 FROM node:lts-alpine AS build
-RUN mkdir -p /usr/know-it-all-src/
-WORKDIR /usr/know-it-all-src/
-COPY package.json /usr/know-it-all-src/
+RUN mkdir -p /usr/knowledge-knight-src/
+WORKDIR /usr/knowledge-knight-src/
+COPY package.json /usr/knowledge-knight-src/
 RUN npm install
-COPY . /usr/know-it-all-src/
+COPY . /usr/knowledge-knight-src/
 RUN npm run build
 
 # Image layer
@@ -20,10 +20,10 @@ ENV CLIENT_ID=${CLIENT_ID}
 
 ENV NODE_ENV=production
 
-RUN mkdir -p /usr/know-it-all
-WORKDIR /usr/know-it-all
-COPY package.json /usr/know-it-all/
+RUN mkdir -p /usr/knowledge-knight
+WORKDIR /usr/knowledge-knight
+COPY package.json /usr/knowledge-knight/
 RUN npm install --omit=dev
-COPY --from=build /usr/know-it-all-src/dist /usr/know-it-all
+COPY --from=build /usr/knowledge-knight-src/dist /usr/knowledge-knight
 
 CMD ["npm", "run", "start:prod"]
