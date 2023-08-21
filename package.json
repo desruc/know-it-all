@@ -1,5 +1,5 @@
 {
-  "name": "know-it-all",
+  "name": "knowledge-knight",
   "version": "1.0.0",
   "description": "Discord trivia bot",
   "main": "index.js",
@@ -10,44 +10,44 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/desruc/know-it-all.git"
+    "url": "git+https://github.com/desruc/knowledge-knight.git"
   },
   "author": "James Cameron",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/desruc/know-it-all/issues"
+    "url": "https://github.com/desruc/knowledge-knight/issues"
   },
-  "homepage": "https://github.com/desruc/know-it-all#readme",
+  "homepage": "https://github.com/desruc/knowledge-knight#readme",
   "devDependencies": {
-    "@types/node": "^18.7.8",
-    "@types/node-fetch": "^2.6.2",
+    "@types/node": "^20.5.1",
+    "@types/node-fetch": "^2.6.4",
     "@types/node-schedule": "^2.1.0",
-    "@typescript-eslint/eslint-plugin": "^5.33.1",
-    "@typescript-eslint/parser": "^5.33.1",
-    "eslint": "^8.22.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-import-resolver-typescript": "^3.4.2",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "nodemon": "^2.0.19",
-    "prettier": "^2.7.1",
-    "rimraf": "^3.0.2",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.2",
+    "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.7.4"
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@discordjs/rest": "^1.0.1",
-    "discord.js": "^14.2.0",
-    "dotenv": "^16.0.1",
-    "module-alias": "^2.2.2",
-    "node-fetch": "^2.6.7",
-    "node-schedule": "^2.1.0",
-    "pg": "^8.7.3",
-    "typeorm": "^0.3.7",
-    "winston": "^3.8.1",
-    "zod": "^3.18.0"
+    "@discordjs/rest": "^2.0.1",
+    "discord.js": "^14.13.0",
+    "dotenv": "^16.3.1",
+    "module-alias": "^2.2.3",
+    "node-fetch": "^3.3.2",
+    "node-schedule": "^2.1.1",
+    "pg": "^8.11.3",
+    "typeorm": "^0.3.17",
+    "winston": "^3.10.0",
+    "zod": "^3.22.2"
   },
   "_moduleAliases": {
     "~": "./"
