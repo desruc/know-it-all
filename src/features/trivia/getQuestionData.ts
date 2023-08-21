@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { z } from "zod";
 import { shuffleArray } from "~/utils/helpers";
-import fetch from "node-fetch";
 
 const questionSchema = z.object({
   category: z.string(),
