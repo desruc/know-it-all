@@ -21,7 +21,7 @@ const resetPointsToGive = () => {
 
 // Get a random time between 10am and 11PM AEST
 export const getRandomTriviaTime = () => {
-  return `${randomNumber(0, 57)} ${randomNumber(0, 12)} * * *`;
+  return `${randomNumber(0, 57)} ${randomNumber(10, 22)} * * *`;
 };
 
 export const rescheduleTrivia = (job: ScheduledJob) => {
